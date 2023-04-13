@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { Logn, Logo, Tomatao } from '../styles';
+import { Logn, Logo, Tomatao } from '../styles/Login';
 import logoRecipesApp from '../images/logoRecipesApp.png';
 import tomate from '../images/tomate.png';
 
@@ -54,7 +54,7 @@ function Login({ history }) {
         />
         <Input
           label="Password"
-          type="text"
+          type="password"
           onChange={ (event) => setPassword(event.target.value) }
           value={ password }
           name="password"

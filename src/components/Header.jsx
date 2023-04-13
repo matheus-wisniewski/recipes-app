@@ -2,9 +2,14 @@ import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import HeaderContext from '../context/HeaderContext';
-import profileIcon from '../images/profileIcon.svg';
-import searchIcon from '../images/searchIcon.svg';
+import profileIcon from '../images/profileIcon.png';
+import searchIcon from '../images/searchIcon.png';
 import { SearchBar } from './SearchBar';
+import { Head, Logos, Icons, Search } from '../styles/Header';
+import HeaderRecipesapp from '../images/HeaderRecipesapp.png';
+import RecipesLogo from '../images/Recipes.png';
+import AppLogo from '../images/App.png';
+import foods from '../images/foods.png';
 
 function Header({ pathname, title }) {
   const shouldDisplayIcon = pathname === '/meals' || pathname === '/drinks';
@@ -13,28 +18,52 @@ function Header({ pathname, title }) {
     showBarFunc,
   } = useContext(HeaderContext);
   return (
-    <div>
-      <Link to="/profile">
+    <Head>
+      <Logos>
         <img
-          src={ profileIcon }
-          alt="profile"
-          data-testid="profile-top-btn"
+          src={ HeaderRecipesapp }
+          alt="recipes app icon"
         />
-      </Link>
-      <h1 data-testid="page-title">
-        { title }
-      </h1>
-      { shouldDisplayIcon && (
-        <button onClick={ showBarFunc }>
+        <div>
           <img
-            src={ searchIcon }
-            alt="search"
-            data-testid="search-top-btn"
+            src={ RecipesLogo }
+            alt="recipes escrito"
           />
-        </button>
-      )}
-      { showBar && (<SearchBar page={ title } />) }
-    </div>
+          <img
+            src={ AppLogo }
+            alt="app escrito"
+          />
+        </div>
+      </Logos>
+
+      <Icons>
+        <Link to="/profile">
+          <img
+            src={ profileIcon }
+            alt="profile"
+            data-testid="profile-top-btn"
+          />
+        </Link>
+
+        { shouldDisplayIcon && (
+          <button
+            onClick={ showBarFunc }
+            style={ { background: 'none', border: 'none' } }
+          >
+            <img
+              src={ searchIcon }
+              alt="search"
+              data-testid="search-top-btn"
+            />
+          </button>
+        )}
+      </Icons>
+
+      <Search>
+        <img src={ foods } alt="meals icon" data-testid="page-title" />
+        { showBar && (<div><SearchBar page={ title } /></div>) }
+      </Search>
+    </Head>
   );
 }
 

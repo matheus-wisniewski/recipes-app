@@ -1,12 +1,23 @@
 import { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import propTypes from 'prop-types';
-
 import HeaderContext from '../context/HeaderContext';
-
 import RecipesCard from './RecipesCard';
 import { getMeals } from '../services/mealsAPI';
 import { getDrinks } from '../services/drinksAPI';
+import { Filters } from '../styles/Home';
+import All from '../images/All.png';
+import Beef from '../images/Beef.png';
+import Breakfast from '../images/Breakfast.png';
+import Chicken from '../images/Chicken.png';
+import Dessert from '../images/Dessert.png';
+import Goat from '../images/Goat.png';
+import AllDrinks from '../images/AllDrinks.png';
+import Cocktail from '../images/Cocktail.png';
+import Cocoa from '../images/Cocoa.png';
+import Drink from '../images/Drink.png';
+import Other from '../images/Other.png';
+import Shake from '../images/Shake.png';
 
 function Recipes() {
   const five = 5;
@@ -46,19 +57,19 @@ function Recipes() {
   }, [pathname, filteredRecipes]);
 
   const handleClick = ({ target }) => {
-    if (target.textContent !== 'All' && target.textContent !== category) {
+    if (target.alt !== 'All' && target.alt !== category) {
       if (pathname === '/meals') {
-        getMeals('c', target.textContent, 'filter', 'meals')
+        getMeals('c', target.alt, 'filter', 'meals')
           .then((response) => response
             .slice(0, twelve))
           .then(setRecipes);
-        setCategory(target.textContent);
+        setCategory(target.alt);
       } else if (pathname === '/drinks') {
-        getDrinks('c', target.textContent, 'filter', 'drinks')
+        getDrinks('c', target.alt, 'filter', 'drinks')
           .then((response) => response
             .slice(0, twelve))
           .then(setRecipes);
-        setCategory(target.textContent);
+        setCategory(target.alt);
       }
     } else if (pathname === '/meals') {
       getMeals('s', '', 'search', 'meals')
@@ -75,15 +86,56 @@ function Recipes() {
     }
   };
 
+  const verifyMealIcon = (src) => {
+    switch (src) {
+    case 'Beef':
+      return Beef;
+    case 'Breakfast':
+      return Breakfast;
+    case 'Chicken':
+      return Chicken;
+    case 'Goat':
+      return Goat;
+    case 'Dessert':
+      return Dessert;
+    default:
+      break;
+    }
+  };
+
+  const verifyDrinksIcon = (src) => {
+    switch (src) {
+    case 'AllDrinks':
+      return AllDrinks;
+    case 'Cocktail':
+      return Cocktail;
+    case 'Cocoa':
+      return Cocoa;
+    case 'Drink':
+      return Drink;
+    case 'Other':
+      return Other;
+    case 'Shake':
+      return Shake;
+    default:
+      break;
+    }
+  };
+
   return (
     <div>
-      <header>
+      <Filters>
         <button
           type="button"
           data-testid="All-category-filter"
           onClick={ (e) => handleClick(e) }
+          style={ { background: 'none', border: 'none' } }
         >
-          All
+          {
+            pathname === '/meals'
+              ? <img src={ All } alt={ All } />
+              : <img src={ AllDrinks } alt={ All } />
+          }
         </button>
         {
           categories.map((category1, index) => (
@@ -91,12 +143,19 @@ function Recipes() {
               key={ index }
               data-testid={ `${category1.strCategory}-category-filter` }
               onClick={ (e) => handleClick(e) }
+              style={ { background: 'none', border: 'none' } }
             >
-              { category1.strCategory }
+              { pathname === '/meals' ? <img
+                src={ verifyMealIcon(category1.strCategory) }
+                alt={ (category1.strCategory) }
+              /> : <img
+                src={ verifyDrinksIcon(category1.strCategory) }
+                alt={ (category1.strCategory) }
+              />}
             </button>
           ))
         }
-      </header>
+      </Filters>
       <main>
         {
           recipes.map((recipe, index) => (
