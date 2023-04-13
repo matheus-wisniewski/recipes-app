@@ -3,7 +3,6 @@ import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import RecipeContext from '../context/RecipeContext';
 import Button from './Button';
-import '../carouselStyles.css';
 
 function DetailedRecipeCard() {
   const { fullDetails, recommended } = useContext(RecipeContext);
