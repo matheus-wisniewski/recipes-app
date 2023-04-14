@@ -4,6 +4,7 @@ import { getDetailedMeals } from '../services/mealsAPI';
 import { getDetailedDrink } from '../services/drinksAPI';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import share from '../images/Share.png';
 import { Buttons, Categoria, DetailedRecipe,
   NomeDaReceita, RecipeImage } from '../styles/DetailedRecipe';
 import {
@@ -45,7 +46,7 @@ function RecipeInProgress() {
     setType(typeOf);
     const href = fullDetails.strMealThumb || fullDetails.strDrinkThumb;
     const titleOf = fullDetails.strMeal || fullDetails.strDrink;
-    const alcoholicOf = fullDetails.strAlcoholic || null;
+    const alcoholicOf = fullDetails.strAlcoholic || '';
     const categoryOf = fullDetails.strCategory || '';
     setCategory(categoryOf);
     setAlcoholic(alcoholicOf);
@@ -56,7 +57,6 @@ function RecipeInProgress() {
     if (previousFavorites.some((fav) => fav.id === id)) { setIsFav(true); }
     const previousDoneRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'))
     || {};
-    // const pDNAR = Object.value();
     const checksOf = previousDoneRecipes[type] ? Object
       .keys(previousDoneRecipes[type]) : [];
     if (checksOf.includes(id)) setChecks(previousDoneRecipes[type][id]);
@@ -71,6 +71,12 @@ function RecipeInProgress() {
     }
     setMeasures(measuresAr);
     setIngredients(ingredientsAr);
+    if (checksOf.includes(id)) {
+      setChecks(previousDoneRecipes[type][id]);
+      if (previousDoneRecipes[type][id].length === ingredientsAr.length) {
+        setIsDisabled(false);
+      }
+    }
   }, [fullDetails, type, id]);
   const doneRecipesDealer = (ingredientsDone) => {
     const typo = type === 'drinks' ? 'drink' : 'meal';
@@ -100,18 +106,11 @@ function RecipeInProgress() {
     const ingredientsDone = !checks.includes(value) ? [...checks, value] : checks
       .filter((check) => check !== value);
     const previousChecks = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
-    const prevCAr = previousChecks ? Object.values(previousChecks) : [];
+    const prevCAr = previousChecks && Object.values(previousChecks);
     let newChecks = {};
     if (prevCAr.length > 0) {
-      // if (ingredientsDone.length === ingredients.length || ingredientsDone.length === 0) {
-      //   delete previousChecks[type][id];
-      //   newChecks = { ...previousChecks,
-      //     [type]: { ...previousChecks[type], [id]: ingredientsDone } };
-      // } else if (ingredientsDone
-      //   .length !== ingredients.length && ingredientsDone.length > 0) {
       newChecks = { ...previousChecks,
         [type]: { ...previousChecks[type], [id]: ingredientsDone } };
-      // }
     } else {
       newChecks = { [type]: { [id]: ingredientsDone } };
     }
@@ -150,7 +149,7 @@ function RecipeInProgress() {
           type: typo,
           nationality: fullDetails.strArea || '',
           category: fullDetails.strCategory || '',
-          alcoholicOrNot: alcoholic,
+          alcoholicOrNot: alcoholic || '',
           name: title,
           image: src,
         }];
@@ -177,9 +176,7 @@ function RecipeInProgress() {
         alt="recipe"
         src={ src }
       />
-
       <NomeDaReceita data-testid="recipe-title">{ title }</NomeDaReceita>
-
       <Buttons>
         <button
           type="button"
@@ -196,17 +193,21 @@ function RecipeInProgress() {
           onClick={ copyBtn }
           style={ { background: 'none', border: 'none' } }
         >
-          Share
+          { share }
         </button>
         { isCopied && <p>Link copied!</p> }
       </Buttons>
-
-      <Categoria data-testid="recipe-category">{ category }</Categoria>
-
+      <img
+        width="300px"
+        data-testid="recipe-photo"
+        alt="recipe"
+        src={ src }
+      />
+      <h1 data-testid="recipe-title">{ title }</h1>
+      <h2 data-testid="recipe-category">{ category }</h2>
       <h3>{ alcoholic && `alcohol: ${alcoholic}`}</h3>
-
       <Ingredientes data-testid="instructions">
-        <IngredienteTitulo>Ingredient</IngredienteTitulo>
+        <h3>Instructions</h3>
         <ul>
           {
             ingredients.map((ing, i) => (
