@@ -15,7 +15,7 @@ import Goat from '../images/Goat.png';
 import AllDrinks from '../images/AllDrinks.png';
 import Cocktail from '../images/Cocktail.png';
 import Cocoa from '../images/Cocoa.png';
-import Drink from '../images/Drink.png';
+import OrdinaryDrink from '../images/OrdinaryDrink.png';
 import Other from '../images/Other.png';
 import Shake from '../images/Shake.png';
 
@@ -111,9 +111,9 @@ function Recipes() {
       return Cocktail;
     case 'Cocoa':
       return Cocoa;
-    case 'Drink':
-      return Drink;
-    case 'Other':
+    case 'Ordinary Drink':
+      return OrdinaryDrink;
+    case 'Other / Unknown':
       return Other;
     case 'Shake':
       return Shake;

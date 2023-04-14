@@ -8,8 +8,9 @@ const colors = {
 
 export const Filters = styled.section`
 display: flex;
+align-items: flex-start;
 position: absolute;
-top: -65px;
+top: -68px;
 right: 5px;
 gap: 10px;
 `;
@@ -35,8 +36,8 @@ margin-bottom: -30px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        text-align: center;
         justify-content: flex-start;
-        gap: 8px;  
         box-sizing: border-box;
         width: 163.2px;
         height: 166.12px;
@@ -50,13 +51,17 @@ margin-bottom: -30px;
     }
 
     h3 {
+        margin-top: 8px;
+        margin-left: 5px;
+        text-align: center;
         align-self: flex-start;
         color: black;
         font-family: 'Epilogue', sans-serif;
         font-style: normal;
         font-weight: 400;
-        font-size: 15px;
+        font-size: 13px;
         line-height: 12px;
+        overflow: scroll;
     }
 
 `;

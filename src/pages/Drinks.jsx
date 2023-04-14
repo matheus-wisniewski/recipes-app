@@ -1,11 +1,14 @@
 import Recipes from '../components/Recipes';
 import Layout from '../components/Layout';
+import { RecipeContainer } from '../styles/Home';
 
 function Drinks() {
   return (
     <div>
       <Layout title="Drinks" pathname="/drinks">
-        <Recipes />
+        <RecipeContainer>
+          <Recipes />
+        </RecipeContainer>
       </Layout>
     </div>
   );

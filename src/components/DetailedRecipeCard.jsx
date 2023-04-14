@@ -3,6 +3,20 @@ import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import RecipeContext from '../context/RecipeContext';
 import Button from './Button';
+import { Buttons,
+  DetailedRecipe,
+  Ingredientes,
+  RecipeImage,
+  Categoria,
+  NomeDaReceita,
+  Instrucoes,
+  IngredienteTitulo,
+  InstrucoesTitulo,
+  Video,
+  Carrosel,
+  RecomendadoTitulo } from '../styles/DetailedRecipe';
+import like from '../images/like.png';
+import share from '../images/Share.png';
 
 function DetailedRecipeCard() {
   const { fullDetails, recommended } = useContext(RecipeContext);
@@ -38,35 +52,49 @@ function DetailedRecipeCard() {
         measureArr.push(value[1]);
       }
     });
+
     return (
-      <>
-        <Button
-          type="button"
-          label="Share"
-          dataTestId="share-btn"
-        />
-        <Button
-          type="button"
-          label="Favorite"
-          dataTestId="favorite-btn"
-        />
-        <img
+      <DetailedRecipe>
+        <RecipeImage
           src={ fullDetails.strMealThumb || fullDetails.strDrinkThumb }
           alt={ fullDetails.strMeal || fullDetails.strDrink }
           data-testid="recipe-photo"
           width="360"
           height="300"
         />
-        <h1 data-testid="recipe-title">
+
+        <NomeDaReceita data-testid="recipe-title">
           { fullDetails.strMeal || fullDetails.strDrink }
-        </h1>
-        <h2 data-testid="recipe-category">
+        </NomeDaReceita>
+
+        <Buttons>
+          <button
+            type="button"
+            data-testid="share-btn"
+            style={ { background: 'none', border: 'none' } }
+          >
+            <img src={ share } alt="favorite" />
+          </button>
+          <button
+            type="button"
+            label="Favorite"
+            data-testid="favorite-btn"
+            style={ { background: 'none', border: 'none' } }
+          >
+            <img src={ like } alt="favorite" />
+          </button>
+        </Buttons>
+
+        <Categoria data-testid="recipe-category">
           { fullDetails.strCategory }
-        </h2>
+        </Categoria>
+
         <h3 data-testid="recipe-category">
           { fullDetails.strAlcoholic || null}
         </h3>
-        <div>
+
+        <Ingredientes>
+          <IngredienteTitulo>Ingredients</IngredienteTitulo>
           { ingredientArr.map((value, index) => (
             (value !== '' && value !== null) && (
               <p data-testid={ `${index}-ingredient-name-and-measure` } key={ index }>
@@ -76,37 +104,43 @@ function DetailedRecipeCard() {
               </p>
             )
           ))}
-        </div>
-        <p data-testid="instructions">
-          { fullDetails.strInstructions }
-        </p>
-        <h1> Video </h1>
-        <video width="360" height="300" controls data-testid="video">
-          <source src={ fullDetails.strYoutube } />
-          <track kind="captions" />
-          Your browser does not support the video tag.
-        </video>
-        <div className="cards-container">
-          { recommended !== null && recommendations.map((value, index) => (
-            <div
-              className="cards-wrapper"
-              key={ index }
-              data-testid={ `${index}-recommendation-card` }
-            >
-              <img
-                src={ value.thumb }
-                alt={ value.title }
-                width="185"
-                height="150"
-              />
-              <h3
-                data-testid={ `${index}-recommendation-title` }
+        </Ingredientes>
+
+        <Instrucoes data-testid="instructions">
+          <InstrucoesTitulo>Instructions</InstrucoesTitulo>
+          <p>{ fullDetails.strInstructions }</p>
+        </Instrucoes>
+
+        <Video>
+          <h2> Video </h2>
+          <video width="330" height="300" controls data-testid="video">
+            <source src={ fullDetails.strYoutube } />
+            <track kind="captions" />
+            Your browser does not support the video tag.
+          </video>
+        </Video>
+
+        <footer>
+          <RecomendadoTitulo>Recommended</RecomendadoTitulo>
+          <Carrosel>
+            { recommended !== null && recommendations.map((value, index) => (
+              <section
+                key={ index }
+                data-testid={ `${index}-recommendation-card` }
               >
-                { value.title }
-              </h3>
-            </div>
-          ))}
-        </div>
+                <img
+                  src={ value.thumb }
+                  alt={ value.title }
+                />
+                <p
+                  data-testid={ `${index}-recommendation-title` }
+                >
+                  { value.title }
+                </p>
+              </section>
+            ))}
+          </Carrosel>
+        </footer>
         { (!isFinished)
         && (isStarted ? (
           <Button
@@ -121,7 +155,8 @@ function DetailedRecipeCard() {
             onClick={ () => history.push(`${pathname}/in-progress`) }
           />
         )) }
-      </>
+
+      </DetailedRecipe>
     );
   }
 }
