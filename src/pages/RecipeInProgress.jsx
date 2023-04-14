@@ -4,7 +4,7 @@ import { getDetailedMeals } from '../services/mealsAPI';
 import { getDetailedDrink } from '../services/drinksAPI';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import share from '../images/Share.png';
+import shareIcon from '../images/shareIcon.svg';
 import { Buttons, Categoria, DetailedRecipe,
   NomeDaReceita, RecipeImage } from '../styles/DetailedRecipe';
 import {
@@ -193,21 +193,14 @@ function RecipeInProgress() {
           onClick={ copyBtn }
           style={ { background: 'none', border: 'none' } }
         >
-          { share }
+          <img src={ shareIcon } alt="compartilhar icone" />
         </button>
         { isCopied && <p>Link copied!</p> }
       </Buttons>
-      <img
-        width="300px"
-        data-testid="recipe-photo"
-        alt="recipe"
-        src={ src }
-      />
-      <h1 data-testid="recipe-title">{ title }</h1>
-      <h2 data-testid="recipe-category">{ category }</h2>
+      <Categoria data-testid="recipe-category">{ category }</Categoria>
       <h3>{ alcoholic && `alcohol: ${alcoholic}`}</h3>
       <Ingredientes data-testid="instructions">
-        <h3>Instructions</h3>
+        <IngredienteTitulo>Ingredientes</IngredienteTitulo>
         <ul>
           {
             ingredients.map((ing, i) => (

@@ -10,6 +10,7 @@ import HeaderRecipesapp from '../images/HeaderRecipesapp.png';
 import RecipesLogo from '../images/Recipes.png';
 import AppLogo from '../images/App.png';
 import foods from '../images/foods.png';
+import Drinks from '../images/Drinks.png';
 
 function Header({ pathname, title }) {
   const shouldDisplayIcon = pathname === '/meals' || pathname === '/drinks';
@@ -60,7 +61,11 @@ function Header({ pathname, title }) {
       </Icons>
 
       <Search>
-        <img src={ foods } alt="meals icon" data-testid="page-title" />
+        <img
+          src={ pathname === '/meals' ? foods : Drinks }
+          alt="meals icon"
+          data-testid="page-title"
+        />
         { showBar && (<div><SearchBar page={ title } /></div>) }
       </Search>
     </Head>
