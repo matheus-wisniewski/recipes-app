@@ -6,7 +6,6 @@ class Input extends Component {
     const { type, name, label, onChange, value, dataTestId, placeholder } = this.props;
     return (
       <label className="label" htmlFor={ name }>
-        { label }
         <div className="">
           <input
             className="input"
@@ -16,6 +15,7 @@ class Input extends Component {
             value={ value }
             onChange={ onChange }
             id={ name }
+            label={ label }
             placeholder={ placeholder }
           />
         </div>
@@ -29,8 +29,8 @@ Input.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
   name: PropTypes.string,
-  onChange: PropTypes.func,
   placeholder: PropTypes.string,
+  onChange: PropTypes.func,
   dataTestId: PropTypes.string.isRequired,
 };
 

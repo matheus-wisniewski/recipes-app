@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Buttons } from '../styles';
 
 class Button extends Component {
   render() {
     const { label, onClick, type, moreClasses, disabled, dataTestId } = this.props;
     return (
-      <button
+      <Buttons
         className={ `button-${moreClasses}` }
         type={ type }
         onClick={ onClick }
@@ -13,7 +14,7 @@ class Button extends Component {
         data-testid={ dataTestId }
       >
         { label }
-      </button>
+      </Buttons>
     );
   }
 }

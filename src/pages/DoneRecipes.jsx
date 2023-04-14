@@ -1,16 +1,15 @@
 import GetRecipesCard from '../components/GetRecipesCard';
-import Header from '../components/Header';
 import Filters from '../components/Filters';
+import Layout from '../components/Layout';
 
 function DoneRecipes() {
   return (
-    <main>
-      <Header title="Done Recipes" />
-
-      <Filters />
-
-      <GetRecipesCard LSItem="doneRecipes" />
-    </main>
+    <DoneRecipes>
+      <Layout title="Done Recipes" pathname="/done-recipes">
+        <Filters />
+        <GetRecipesCard LSItem="doneRecipes" />
+      </Layout>
+    </DoneRecipes>
   );
 }
 
