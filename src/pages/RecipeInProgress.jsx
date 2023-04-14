@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams /* useLocation */ } from 'react-router-dom';
 import { getDetailedMeals } from '../services/mealsAPI';
-// import PropTypes from 'prop-types';
 import { getDetailedDrink } from '../services/drinksAPI';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import { Buttons, Categoria, DetailedRecipe,
+  NomeDaReceita, RecipeImage } from '../styles/DetailedRecipe';
+import {
+  IngredienteTitulo, Ingredientes,
+  Instrucoes, InstrucoesTitulo, FinishButtons } from '../styles/InProgress';
 
 const copy = require('clipboard-copy');
 
@@ -24,14 +28,10 @@ function RecipeInProgress() {
   const [category, setCategory] = useState('');
   const [isCopied, setIsCopied] = useState(false);
   const [isFav, setIsFav] = useState(false);
-
   useEffect(() => {
-    console.log(idAndType);
     const idOf = Object.values(idAndType);
-    console.log(idOf[0]);
     const isType = Object.keys(idAndType);
     setId(idOf[0]);
-    console.log(isType);
     if (isType[0] === 'drinksId') {
       getDetailedDrink(idOf[0])
         .then((response) => setFullDetails((response.drinks)[0]));
@@ -40,7 +40,6 @@ function RecipeInProgress() {
         .then((response) => setFullDetails((response.meals)[0]));
     }
   }, [idAndType]);
-
   useEffect(() => {
     const typeOf = fullDetails.idDrink ? 'drinks' : 'meals';
     setType(typeOf);
@@ -70,7 +69,6 @@ function RecipeInProgress() {
     setMeasures(measuresAr);
     setIngredients(ingredientsAr);
   }, [fullDetails, type, id]);
-
   const doneRecipesDealer = (ingredientsDone) => {
     const typo = type === 'drinks' ? 'drink' : 'meal';
     const previousDidRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
@@ -92,10 +90,8 @@ function RecipeInProgress() {
     } else {
       newDoneRecipes = previousDidRecipes.filter((recipe) => recipe.id !== id);
     }
-    console.log(newDoneRecipes);
     localStorage.setItem('doneRecipes', JSON.stringify(newDoneRecipes));
   };
-
   const checkDealer = (target) => {
     const { value } = target;
     const ingredientsDone = !checks.includes(value) ? [...checks, value] : checks
@@ -125,7 +121,6 @@ function RecipeInProgress() {
     }
     doneRecipesDealer(ingredientsDone);
   };
-
   const copyBtn = () => {
     let address = '';
     if (type === 'meals') {
@@ -136,7 +131,6 @@ function RecipeInProgress() {
     setIsCopied(true);
     copy(address);
   };
-
   const favoriteManager = () => {
     const ancientFavorite = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
     let newFavs = [];
@@ -171,16 +165,24 @@ function RecipeInProgress() {
     }
     localStorage.setItem('favoriteRecipes', JSON.stringify(newFavs));
   };
-  //   const isRecipeDone = () => {};
-
   return (
-    <>
-      <div>
+    <DetailedRecipe>
+      <RecipeImage
+        width="300px"
+        data-testid="recipe-photo"
+        alt="recipe"
+        src={ src }
+      />
+
+      <NomeDaReceita data-testid="recipe-title">{ title }</NomeDaReceita>
+
+      <Buttons>
         <button
           type="button"
           data-testid="favorite-btn"
           onClick={ favoriteManager }
           src={ !isFav ? whiteHeartIcon : blackHeartIcon }
+          style={ { background: 'none', border: 'none' } }
         >
           <img alt="favorite icon" src={ !isFav ? whiteHeartIcon : blackHeartIcon } />
         </button>
@@ -188,22 +190,19 @@ function RecipeInProgress() {
           type="button"
           data-testid="share-btn"
           onClick={ copyBtn }
+          style={ { background: 'none', border: 'none' } }
         >
           Share
         </button>
         { isCopied && <p>Link copied!</p> }
-      </div>
-      <img
-        width="300px"
-        data-testid="recipe-photo"
-        alt="recipe"
-        src={ src }
-      />
-      <h1 data-testid="recipe-title">{ title }</h1>
-      <h2 data-testid="recipe-category">{ category }</h2>
+      </Buttons>
+
+      <Categoria data-testid="recipe-category">{ category }</Categoria>
+
       <h3>{ alcoholic && `alcohol: ${alcoholic}`}</h3>
-      <div data-testid="instructions">
-        <h3>Instructions</h3>
+
+      <Ingredientes data-testid="instructions">
+        <IngredienteTitulo>Ingredient</IngredienteTitulo>
         <ul>
           {
             ingredients.map((ing, i) => (
@@ -220,7 +219,6 @@ function RecipeInProgress() {
                   type="checkbox"
                   onChange={ ({ target }) => {
                     checkDealer(target);
-                    // isRecipeDone();
                   } }
                 />
                 {`${ing}`}
@@ -229,16 +227,20 @@ function RecipeInProgress() {
             ))
           }
         </ul>
+      </Ingredientes>
+      <Instrucoes>
+        <InstrucoesTitulo>Instructions</InstrucoesTitulo>
         <p>{fullDetails.strInstructions}</p>
-      </div>
-      <button
+      </Instrucoes>
+
+      <FinishButtons
         data-testid="finish-recipe-btn"
         disabled={ isDisabled }
         onClick={ () => history.push('/done-recipes') }
       >
         finish
-      </button>
-    </>
+      </FinishButtons>
+    </DetailedRecipe>
   );
 }
 

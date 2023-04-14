@@ -131,7 +131,7 @@ font-size: 20px;
 line-height: 20px;
 `;
 
-export const Instrucoes = styled.p`
+export const Instrucoes = styled.div`
 position: relative;
 font-size: auto;
 display: flex;

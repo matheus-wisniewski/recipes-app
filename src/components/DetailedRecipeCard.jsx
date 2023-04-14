@@ -141,6 +141,7 @@ function DetailedRecipeCard() {
             ))}
           </Carrosel>
         </footer>
+
         { (!isFinished)
         && (isStarted ? (
           <Button
