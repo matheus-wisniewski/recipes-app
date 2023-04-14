@@ -46,7 +46,7 @@ function RecipeInProgress() {
     setType(typeOf);
     const href = fullDetails.strMealThumb || fullDetails.strDrinkThumb;
     const titleOf = fullDetails.strMeal || fullDetails.strDrink;
-    const alcoholicOf = fullDetails.strAlcoholic || null;
+    const alcoholicOf = fullDetails.strAlcoholic || '';
     const categoryOf = fullDetails.strCategory || '';
     setCategory(categoryOf);
     setAlcoholic(alcoholicOf);
@@ -57,11 +57,9 @@ function RecipeInProgress() {
     if (previousFavorites.some((fav) => fav.id === id)) { setIsFav(true); }
     const previousDoneRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'))
     || {};
-    // const pDNAR = Object.value();
     const checksOf = previousDoneRecipes[type] ? Object
       .keys(previousDoneRecipes[type]) : [];
     console.log(checksOf);
-    if (checksOf.includes(id)) setChecks(previousDoneRecipes[type][id]);
     const measuresAr = [];
     const ingredientsAr = [];
     const twenty = 20;
@@ -73,6 +71,12 @@ function RecipeInProgress() {
     }
     setMeasures(measuresAr);
     setIngredients(ingredientsAr);
+    if (checksOf.includes(id)) {
+      setChecks(previousDoneRecipes[type][id]);
+      if (previousDoneRecipes[type][id].length === ingredientsAr.length) {
+        setIsDisabled(false);
+      }
+    }
   }, [fullDetails, type, id]);
 
   const doneRecipesDealer = (ingredientsDone) => {
@@ -105,18 +109,11 @@ function RecipeInProgress() {
     const ingredientsDone = !checks.includes(value) ? [...checks, value] : checks
       .filter((check) => check !== value);
     const previousChecks = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
-    const prevCAr = previousChecks ? Object.values(previousChecks) : [];
+    const prevCAr = previousChecks && Object.values(previousChecks);
     let newChecks = {};
     if (prevCAr.length > 0) {
-      // if (ingredientsDone.length === ingredients.length || ingredientsDone.length === 0) {
-      //   delete previousChecks[type][id];
-      //   newChecks = { ...previousChecks,
-      //     [type]: { ...previousChecks[type], [id]: ingredientsDone } };
-      // } else if (ingredientsDone
-      //   .length !== ingredients.length && ingredientsDone.length > 0) {
       newChecks = { ...previousChecks,
         [type]: { ...previousChecks[type], [id]: ingredientsDone } };
-      // }
     } else {
       newChecks = { [type]: { [id]: ingredientsDone } };
     }
@@ -157,7 +154,7 @@ function RecipeInProgress() {
           type: typo,
           nationality: fullDetails.strArea || '',
           category: fullDetails.strCategory || '',
-          alcoholicOrNot: alcoholic,
+          alcoholicOrNot: alcoholic || '',
           name: title,
           image: src,
         }];
@@ -176,7 +173,6 @@ function RecipeInProgress() {
     }
     localStorage.setItem('favoriteRecipes', JSON.stringify(newFavs));
   };
-  //   const isRecipeDone = () => {};
 
   return (
     <>
@@ -206,7 +202,7 @@ function RecipeInProgress() {
       />
       <h1 data-testid="recipe-title">{ title }</h1>
       <h2 data-testid="recipe-category">{ category }</h2>
-      <h3>{ alcoholic && `alcohol: ${alcoholic}`}</h3>
+      <h3 data-testid="isAlc">{ alcoholic }</h3>
       <div data-testid="instructions">
         <h3>Instructions</h3>
         <ul>
