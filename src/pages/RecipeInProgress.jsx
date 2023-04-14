@@ -59,7 +59,6 @@ function RecipeInProgress() {
     // const pDNAR = Object.value();
     const checksOf = previousDoneRecipes[type] ? Object
       .keys(previousDoneRecipes[type]) : [];
-    console.log(checksOf);
     if (checksOf.includes(id)) setChecks(previousDoneRecipes[type][id]);
     const measuresAr = [];
     const ingredientsAr = [];
@@ -237,7 +236,6 @@ function RecipeInProgress() {
         <InstrucoesTitulo>Instructions</InstrucoesTitulo>
         <p>{fullDetails.strInstructions}</p>
       </Instrucoes>
-
       <FinishButtons
         data-testid="finish-recipe-btn"
         disabled={ isDisabled }
@@ -248,5 +246,4 @@ function RecipeInProgress() {
     </DetailedRecipe>
   );
 }
-
 export default RecipeInProgress;

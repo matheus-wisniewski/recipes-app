@@ -19,11 +19,13 @@ function ShareButton() {
         type="button"
         onClick={ copyBtn }
         src={ shareIcon }
+        style={ { background: 'none', border: 'none' } }
       >
         <img
           src={ shareIcon }
           alt="share"
           data-testid="share-btn"
+          style={ { background: 'none', border: 'none' } }
         />
       </button>
       { isCopied && <p> Link copied! </p>}

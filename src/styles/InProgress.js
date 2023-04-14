@@ -104,4 +104,11 @@ border: none;
   border: 1px solid ${colors.primary};
   box-shadow: 0 0 10px ${colors.primary};
 }
+
+:disabled {
+  background-color: gray;
+  border: none;
+  box-shadow: none;
+  cursor: auto;
+}
 `;

@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-
 import GetRecipesContext from '../context/GetRecipesContext';
 
 function Filters() {

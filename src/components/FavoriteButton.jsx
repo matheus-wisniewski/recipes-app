@@ -43,6 +43,7 @@ function FavoriteButton() {
       data-testid="favorite-btn"
       onClick={ () => { setFavorite(); } }
       src={ !isFavorite ? whiteHeartIcon : blackHeartIcon }
+      style={ { background: 'none', border: 'none' } }
     >
       <img alt="favorite icon" src={ !isFavorite ? whiteHeartIcon : blackHeartIcon } />
     </button>
