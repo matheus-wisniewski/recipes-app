@@ -1,7 +1,7 @@
 import React from 'react';
 import HeaderProvider from './context/HeaderProvider';
 import RecipeProvider from './context/RecipeProvider';
-import DoneRecipesProvider from './context/DoneRecipesProvider';
+import GetRecipesProvider from './context/GetRecipesProvider';
 import Routes from './Routes';
 import { GlobalStyle } from './styles';
 
@@ -10,10 +10,10 @@ class App extends React.Component {
     return (
       <RecipeProvider>
         <HeaderProvider>
-          <DoneRecipesProvider>
+          <GetRecipesProvider>
             <Routes />
             <GlobalStyle />
-          </DoneRecipesProvider>
+          </GetRecipesProvider>
         </HeaderProvider>
       </RecipeProvider>
     );

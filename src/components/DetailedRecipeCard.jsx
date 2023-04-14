@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import RecipeContext from '../context/RecipeContext';
@@ -15,19 +15,52 @@ import { Buttons,
   Video,
   Carrosel,
   RecomendadoTitulo } from '../styles/DetailedRecipe';
-import like from '../images/like.png';
-import share from '../images/Share.png';
+import FavoriteButton from './FavoriteButton';
+import ShareButton from './ShareButton';
 
 function DetailedRecipeCard() {
   const { fullDetails, recommended } = useContext(RecipeContext);
-  const [isFinished] = useState(false);
-  const [isStarted] = useState(false);
+  const [isFinished, setFinished] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
 
+  const { id } = useContext(RecipeContext);
   const { pathname } = useLocation();
   const history = useHistory();
 
   const recommendedAmount = 6;
   const recommendations = [];
+
+  const doneVerify = () => {
+    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+    if (doneRecipes !== null) {
+      doneRecipes.forEach((value) => {
+        if ((value.id).includes(id)) setFinished(true);
+        else setFinished(false);
+      });
+    }
+  };
+
+  const progressVerify = () => {
+    if (localStorage.getItem('inProgressRecipes') !== null) {
+      const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
+      const { meals } = inProgressRecipes;
+      const { drinks } = inProgressRecipes;
+      if (meals) {
+        Object.keys(meals).forEach((value) => {
+          if (value.includes(id)) setIsStarted(true);
+          else setIsStarted(false);
+        });
+      }
+      if (drinks) {
+        Object.keys(drinks).forEach((value) => {
+          if (value.includes(id)) setIsStarted(true);
+          else setIsStarted(false);
+        });
+      }
+    }
+  };
+
+  useEffect(() => { doneVerify(); progressVerify(); }, [id, fullDetails]);
 
   if (recommended !== null) {
     for (let i = 0; i < recommendedAmount; i += 1) {
@@ -68,21 +101,8 @@ function DetailedRecipeCard() {
         </NomeDaReceita>
 
         <Buttons>
-          <button
-            type="button"
-            data-testid="share-btn"
-            style={ { background: 'none', border: 'none' } }
-          >
-            <img src={ share } alt="favorite" />
-          </button>
-          <button
-            type="button"
-            label="Favorite"
-            data-testid="favorite-btn"
-            style={ { background: 'none', border: 'none' } }
-          >
-            <img src={ like } alt="favorite" />
-          </button>
+          <ShareButton />
+          <FavoriteButton />
         </Buttons>
 
         <Categoria data-testid="recipe-category">
@@ -147,6 +167,8 @@ function DetailedRecipeCard() {
           <Button
             label="Continue Recipe"
             moreClasses="start-recipe"
+            dataTestId="start-recipe-btn"
+            onClick={ () => history.push(`${pathname}/in-progress`) }
           />
         ) : (
           <Button
