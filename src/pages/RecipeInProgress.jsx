@@ -42,16 +42,23 @@ function RecipeInProgress() {
     }
   }, [idAndType]);
   useEffect(() => {
-    const typeOf = fullDetails.idDrink ? 'drinks' : 'meals';
-    setType(typeOf);
-    const href = fullDetails.strMealThumb || fullDetails.strDrinkThumb;
-    const titleOf = fullDetails.strMeal || fullDetails.strDrink;
-    const alcoholicOf = fullDetails.strAlcoholic || '';
-    const categoryOf = fullDetails.strCategory || '';
-    setCategory(categoryOf);
-    setAlcoholic(alcoholicOf);
-    setTitle(titleOf);
-    setSrc(href);
+    if (fullDetails.idDrink) {
+      setType('drinks');
+      const href = fullDetails.strDrinkThumb;
+      const titleOf = fullDetails.strDrink;
+      const alcoholicOf = fullDetails.strAlcoholic;
+      setAlcoholic(alcoholicOf);
+      setTitle(titleOf);
+      setSrc(href);
+    } else {
+      setType('meals');
+      const href = fullDetails.strMealThumb;
+      const titleOf = fullDetails.strMeal;
+      const categoryOf = fullDetails.strCategory;
+      setCategory(categoryOf);
+      setTitle(titleOf);
+      setSrc(href);
+    }
     const previousFavorites = JSON.parse(localStorage.getItem('favoriteRecipes'))
     || [];
     if (previousFavorites.some((fav) => fav.id === id)) { setIsFav(true); }

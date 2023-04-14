@@ -61,7 +61,7 @@ margin-bottom: -30px;
         font-weight: 400;
         font-size: 13px;
         line-height: 12px;
-        overflow: scroll;
+        overflow: hidden;
     }
 
 `;
