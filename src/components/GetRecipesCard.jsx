@@ -37,7 +37,7 @@ function GetRecipesCard({ LSItem }) {
   return (
     <main>
 
-      { recipes?.map((recipe, index) => (
+      { recipes.map((recipe, index) => (
         <div key={ index }>
           <Link
             to={ `/${recipe.type}s/${recipe.id}` }
